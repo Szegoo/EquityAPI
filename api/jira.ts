@@ -1,0 +1,2 @@
+//api https://hostname.atlassian.net/rest/api/3/user/search?query=sakacszergej@gmail.com&expand=attributes
+//https://community.atlassian.com/t5/Jira-questions/JIRA-API-which-returns-last-login-time-of-all-users/qaq-p/1153472
