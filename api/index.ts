@@ -1,10 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express';
 import {isActiveOnCallendar, hadMeetings} from './calendar';
 import {getEmployees, addEmployee} from '../db/index';
+import cors from 'cors';
 
 const app = express();
 const port = 5001;
 
+app.use(cors());
 app.get('/removal-requests', async(req: Request, res : Response) => {
     //this will store the employee wallet addresses
     const employees = await getEmployees();
@@ -19,7 +21,9 @@ app.get('/removal-requests', async(req: Request, res : Response) => {
     res.json(inactiveEmployees);
 });
 app.post('/add-employee', async(req: Request, res: Response) => {
+    const {email, bloxicoMail, wallet} =  req.body;
 
+    await addEmployee(wallet, bloxicoMail, email);
 })
 
 app.listen(port, () => {
