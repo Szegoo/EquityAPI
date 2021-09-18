@@ -4,6 +4,10 @@ import {getEmployees, addEmployee} from '../db/index';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
+const corsOptions = {
+    origin: 'http://127.0.0.1:8080'
+}
+
 const app = express();
 const port = 5001;
 
@@ -23,7 +27,7 @@ app.get('/removal-requests', async(req: Request, res : Response) => {
     }
     res.json(inactiveEmployees);
 });
-app.post('/add-employee', async(req: Request, res: Response) => {
+app.post('/add-employee', cors(corsOptions),async(req: Request, res: Response) => {
     const {list} =  req.body;
     console.log(list);
 
