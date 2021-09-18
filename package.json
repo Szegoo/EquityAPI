@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "googleapis": "^85.0.0",
     "moment": "^2.29.1",
+    "nodemailer": "^6.6.3",
     "ts-node": "^10.2.1"
   },
   "devDependencies": {

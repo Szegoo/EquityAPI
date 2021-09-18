@@ -15,12 +15,13 @@ app.use(cors());
 app.use(bodyParser.json())
 
 app.get('/removal-requests', async(req: Request, res : Response) => {
+    console.log('request called');
     //this will store the employee wallet addresses
     const employees = await getEmployees();
     let inactiveEmployees = [];
     for(let i = 0; i < employees.length; i++) {
-        const isActive = await isActiveOnCallendar(employees[i].email);
-        const had = await hadMeetings(employees[i].email);
+        const isActive = await isActiveOnCallendar(employees[i].bloxicoMail, employees[i].email);
+        const had = await hadMeetings(employees[i].bloxicoMail, employees[i].email);
         if(!isActive && !had) {
             inactiveEmployees.push(employees[i].wallet);
         }

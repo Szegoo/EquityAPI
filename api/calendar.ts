@@ -1,5 +1,6 @@
 import {google} from 'googleapis';
 import moment from 'moment';
+import {sendMail} from './mail';
 require('dotenv').config();
 
 const calendar = google.calendar('v3');
@@ -10,7 +11,7 @@ const calendar = google.calendar('v3');
  * @param {string} email the email of the employee
  * @return {boolean} if the last time he checked his calendar was under 24h from now -> returns true.
  */
-export const isActiveOnCallendar = async(email:string): Promise<boolean> => {
+export const isActiveOnCallendar = async(email:string, backup: string): Promise<boolean> => {
     let res;
     try{
         res = await calendar.events.list({ 
@@ -18,6 +19,7 @@ export const isActiveOnCallendar = async(email:string): Promise<boolean> => {
             key: process.env.KEY
         });
     }catch(err) {
+        sendMail(backup);
         return false;
     }
     console.log(res.data.updated);
@@ -34,7 +36,7 @@ export const isActiveOnCallendar = async(email:string): Promise<boolean> => {
  * @param {string} email the email of the employee
  * @return {boolean} if the last time he checked his calendar was under 24h from now -> returns true.
  */
-export const hadMeetings = async(email:string) : Promise<boolean> => {
+export const hadMeetings = async(email:string, backup:string) : Promise<boolean> => {
     let res;
     //list function will throw an error if 
     //it could not find the email
@@ -44,6 +46,8 @@ export const hadMeetings = async(email:string) : Promise<boolean> => {
             key: process.env.KEY
         });
     }catch(err) {
+        //send a mail if the email is not found
+        sendMail(backup);
         return false;
     }
     const items:any = res.data.items;
