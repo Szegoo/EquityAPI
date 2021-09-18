@@ -11,10 +11,15 @@ const calendar = google.calendar('v3');
  * @return {boolean} if the last time he checked his calendar was under 24h from now -> returns true.
  */
 export const isActiveOnCallendar = async(email:string): Promise<boolean> => {
-    const res = await calendar.events.list({ 
-        calendarId: email,
-        key: process.env.KEY
-    });
+    let res;
+    try{
+        res = await calendar.events.list({ 
+            calendarId: email,
+            key: process.env.KEY
+        });
+    }catch(err) {
+        return false;
+    }
     console.log(res.data.updated);
     var lastTimeUpdated = moment(res.data.updated);
     //current time - 24h
@@ -30,10 +35,17 @@ export const isActiveOnCallendar = async(email:string): Promise<boolean> => {
  * @return {boolean} if the last time he checked his calendar was under 24h from now -> returns true.
  */
 export const hadMeetings = async(email:string) : Promise<boolean> => {
-    const res = await calendar.events.list({ 
-        calendarId: email,
-        key: process.env.KEY
-    });
+    let res;
+    //list function will throw an error if 
+    //it could not find the email
+    try {
+        res = await calendar.events.list({ 
+            calendarId: email,
+            key: process.env.KEY
+        });
+    }catch(err) {
+        return false;
+    }
     const items:any = res.data.items;
     let lastMeeting = moment(items[items.length - 1].start.dateTime);
     var currentTimeMinusDay = moment(new Date((Date.now() - (1000*3600*24))).toUTCString());

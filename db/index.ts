@@ -1,18 +1,21 @@
 import {PrivateKey, Client, ThreadID} from '@textile/hub';
 import {employeeSchema} from './schema';
+import {Employee} from './employee';
+require('dotenv').config();
+console.log(process.env.SECRET);
 
 const keyinfo = {
     key: 'b52fhd7edjbnfqpnmcwvri6pkta',
-    secret: "bd3u2phokq3ddw4xy3gzyazj6nqymktwrnu4mxda"
+    secret: process.env.SECRET
 }
 async function generate () {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.newDB(null, 'test1');
+    const thread = await client.newDB(undefined, 'test1');
 
     await client.newCollection(thread, {name: 'Employees', schema: employeeSchema});
     return client;
 }
-async function addEmployee(wallet: string, bloxicoMail: string, email: string) {
+export async function addEmployee(wallet: string, bloxicoMail: string, email: string) {
     const client = await Client.withKeyInfo(keyinfo);
     const thread = await client.getThread('test1');
     const employee = await getEmployee(bloxicoMail);
@@ -28,7 +31,7 @@ async function addEmployee(wallet: string, bloxicoMail: string, email: string) {
         email
     }])
 }
-async function getEmployee(bloxicoMail) {
+async function getEmployee(bloxicoMail:string) {
     const client = await Client.withKeyInfo(keyinfo);
     const thread = await client.getThread('test1');
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
@@ -42,15 +45,13 @@ async function getEmployee(bloxicoMail) {
     }))[0];
     return employee;
 }
-async function getEmployees() {
+export async function getEmployees() :Promise<Employee[]>  {
     const client = await Client.withKeyInfo(keyinfo);
     const thread = await client.getThread('test1');
 
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
 
-    const employees = await client.find(threadId, 'Employees', {});
+    const employees: Employee[] = await client.find(threadId, 'Employees', {});
 
     return employees;
 }
-//addEmployee("0xF47f6888d1072D865C5Bf379bae0A90Ce2b77AdE", "pera@bloxico.com", "pera@gmail.com");
-//getEmployee('pera@bloxico.com');
