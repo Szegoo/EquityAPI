@@ -45,6 +45,11 @@ async function getEmployee(bloxicoMail:string) {
     }))[0];
     return employee;
 }
+export async function getEmployeeByIndx(indx:number):Promise<Employee> {
+    const employees = await getEmployees();
+
+    return employees[indx];
+}
 export async function getEmployees() :Promise<Employee[]>  {
     const client = await Client.withKeyInfo(keyinfo);
     const thread = await client.getThread('test1');

@@ -13,7 +13,7 @@ let mailOptions = {
     from: process.env.MAIL,
     to: '',
     subject: 'Warning',
-    text: "Bloxico mail is not working!",
+    text: "Company mail is not working!",
 }
 
 export function sendMail(receiver:string) {

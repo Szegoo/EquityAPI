@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import {isActiveOnCallendar, hadMeetings} from './calendar';
-import {getEmployees, addEmployee} from '../db/index';
+import {getEmployees, addEmployee, getEmployeeByIndx} from '../db/index';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
@@ -15,18 +15,18 @@ app.use(cors());
 app.use(bodyParser.json())
 
 app.get('/removal-requests', async(req: Request, res : Response) => {
+    const {indx} = req.query;
     console.log('request called');
     //this will store the employee wallet addresses
-    const employees = await getEmployees();
-    let inactiveEmployees = [];
-    for(let i = 0; i < employees.length; i++) {
-        const isActive = await isActiveOnCallendar(employees[i].bloxicoMail, employees[i].email);
-        const had = await hadMeetings(employees[i].bloxicoMail, employees[i].email);
-        if(!isActive && !had) {
-            inactiveEmployees.push(employees[i].wallet);
-        }
+    const employee = await getEmployeeByIndx(Number(indx));
+
+    const isActive = await isActiveOnCallendar(employee.bloxicoMail, employee.email);
+    const had = await hadMeetings(employee.bloxicoMail, employee.email);
+    if(!isActive || !had) {
+        res.json({"indx": indx});
+    }else {
+        res.json({"indx": -1});
     }
-    res.json(inactiveEmployees);
 });
 app.post('/add-employee', cors(corsOptions),async(req: Request, res: Response) => {
     const {list} =  req.body;

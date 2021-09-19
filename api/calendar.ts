@@ -19,7 +19,7 @@ export const isActiveOnCallendar = async(email:string, backup: string): Promise<
             key: process.env.KEY
         });
     }catch(err) {
-        sendMail(backup);
+        //sendMail(backup);
         return false;
     }
     console.log(res.data.updated);
@@ -47,7 +47,7 @@ export const hadMeetings = async(email:string, backup:string) : Promise<boolean>
         });
     }catch(err) {
         //send a mail if the email is not found
-        sendMail(backup);
+        //sendMail(backup);
         return false;
     }
     const items:any = res.data.items;
