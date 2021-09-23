@@ -28,10 +28,25 @@ export async function addEmployee(wallet: string, bloxicoMail: string, email: st
     client.create(threadId, 'Employees', [{
         wallet,
         bloxicoMail,
-        email
+        email,
+        activity: []
     }])
 }
-async function getEmployee(bloxicoMail:string) {
+export async function setActivity(activity: boolean, bloxicoMail: string) {
+    const client = await Client.withKeyInfo(keyinfo);
+    const thread = await client.getThread('test1');
+    const threadId: ThreadID = ThreadID.fromString(thread.id); 
+    const employee : Employee = await getEmployee(bloxicoMail);
+    employee.activity.push(activity);
+    await client.delete(threadId, 'Employees', [employee._id]);
+    await client.create(threadId, 'Employees', [{
+        wallet: employee.wallet,
+        email: employee.email,
+        bloxicoMail: employee.bloxicoMail,
+        activity: employee.activity,
+    }]);
+}
+async function getEmployee(bloxicoMail:string): Promise<any> {
     const client = await Client.withKeyInfo(keyinfo);
     const thread = await client.getThread('test1');
     const threadId: ThreadID = ThreadID.fromString(thread.id); 

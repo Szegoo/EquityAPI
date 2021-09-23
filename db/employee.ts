@@ -1,5 +1,7 @@
 export interface Employee {
+    _id: string,
     wallet: string,
     bloxicoMail: string, 
-    email: string
+    email: string,
+    activity: boolean[],
 }

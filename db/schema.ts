@@ -5,6 +5,11 @@ export const employeeSchema = {
         _id: {type: 'string'},
         wallet: {type: 'string'},
         bloxicoMail: {type: 'string'},
-        email: {type: 'string'}
+        email: {type: 'string'},
+        activity: {
+            type: 'boolean',
+            minimum: 0,
+            exlusiveMaximum: 732,
+        }
     }
 }
