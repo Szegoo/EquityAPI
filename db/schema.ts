@@ -10,6 +10,7 @@ export const employeeSchema = {
             type: 'boolean',
             minimum: 0,
             exlusiveMaximum: 732,
-        }
+        },
+        updated: 'number'
     }
 }

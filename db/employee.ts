@@ -4,4 +4,5 @@ export interface Employee {
     bloxicoMail: string, 
     email: string,
     activity: boolean[],
+    updated: number
 }

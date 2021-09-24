@@ -29,7 +29,8 @@ export async function addEmployee(wallet: string, bloxicoMail: string, email: st
         wallet,
         bloxicoMail,
         email,
-        activity: []
+        activity: [],
+        updated: 0
     }])
 }
 export async function setActivity(activity: boolean, bloxicoMail: string) {
@@ -37,9 +38,14 @@ export async function setActivity(activity: boolean, bloxicoMail: string) {
     const thread = await client.getThread('test1');
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
     const employee : Employee = await getEmployee(bloxicoMail);
+    if(employee.updated > Date.now()-(1000*3600*24)) {
+        return;
+    }
     employee.activity.push(activity);
+    employee.updated = Date.now();
     await client.delete(threadId, 'Employees', [employee._id]);
     await client.create(threadId, 'Employees', [{
+        updated: employee.updated,
         wallet: employee.wallet,
         email: employee.email,
         bloxicoMail: employee.bloxicoMail,

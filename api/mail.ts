@@ -13,7 +13,7 @@ let mailOptions = {
     from: process.env.MAIL,
     to: '',
     subject: 'Warning',
-    text: "Company mail is not working!",
+    text: "Your company email is not found",
 }
 
 export function sendMail(receiver:string) {
