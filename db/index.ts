@@ -46,7 +46,7 @@ export async function setActivity(activity: boolean, bloxicoMail: string) {
         activity: employee.activity,
     }]);
 }
-async function getEmployee(bloxicoMail:string): Promise<any> {
+export async function getEmployee(bloxicoMail:string): Promise<any> {
     const client = await Client.withKeyInfo(keyinfo);
     const thread = await client.getThread('test1');
     const threadId: ThreadID = ThreadID.fromString(thread.id); 

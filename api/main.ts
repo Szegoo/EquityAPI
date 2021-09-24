@@ -1,16 +1,38 @@
 import {isActiveOnCallendar, hadMeetings} from './calendar';
-import {getEmployees} from '../db/index';
+import {getEmployees, setActivity, getEmployee} from '../db/index';
 import {Employee} from '../db/employee';
 
-export async function isActive(bloxicoMail:string, backup:string):Promise<boolean> {
+export async function isActive(bloxicoMail:string, backup:string, addActivity: boolean=false):Promise<boolean> {
+    //check if the user was active 80% of the time in the last max 60 days;
+    let res:boolean;
     const isActive = await isActiveOnCallendar(bloxicoMail, 
         backup);
     const had = await hadMeetings(bloxicoMail, 
         backup)
-    if(!isActive || !had) {
-        return false;
+    if(addActivity) {
+        if(!isActive || !had) {
+            await setActivity(false, bloxicoMail);
+        }else {
+            await setActivity(true, bloxicoMail);
+        }
     }
-    return true;
+
+    const employee:Employee = await getEmployee(bloxicoMail);
+    let activity:number = 0;
+    let border:number = 0;
+    let length = employee.activity.length;
+    if(employee.activity.length > 60) {
+        border = 60
+    }else {
+        border = employee.activity.length;
+    }
+    for(let i = 0; i > border; i++) {
+        if(employee.activity[i] === true) {
+            activity++;
+        }
+    }
+    res = ((length/100)*80) < activity;
+    return res;
 }
 export async function getInactive():Promise<Employee[]> {
    const employees = await getEmployees();
