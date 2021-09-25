@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon ./api/index.ts",
-    "start": "npm install ts-node && ts-node api/index.ts"
+    "start": "npm install ts-node typescript && ts-node api/index.ts"
   },
   "author": "",
   "license": "ISC",
