@@ -28,7 +28,7 @@ app.get('/remove', async (req: Request, res: Response) => {
     res.json({"remove ": remove});
 });
 app.get('/number-of-employees', async (req: Request, res: Response) => {
-    const employees = await getEmployees();
+    console.log('get number called');
     const inactive = await getInactive();
     res.json({"number": inactive.length});
 });
@@ -47,6 +47,6 @@ app.post('/add-employee', cors(corsOptions),async(req: Request, res: Response) =
     }
 })
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
     console.log("listening on port " + port);
 });

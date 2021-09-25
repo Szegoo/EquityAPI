@@ -23,7 +23,7 @@ export async function isActive(bloxicoMail:string, backup:string, addActivity: b
             await setActivity(true, bloxicoMail);
         }
     }
-
+    
     const employee:Employee = await getEmployee(bloxicoMail);
     let activity:number = 0;
     let border:number = 0;
@@ -46,6 +46,7 @@ export async function getInactive():Promise<Employee[]> {
    const employees = await getEmployees();
    let unactive = [];
    for(let i = 0; i < employees.length; i++) {
+        console.log(employees[i]);
         const active = isActive(employees[i].bloxicoMail, employees[i].email);
         if(!active) {
             unactive.push(employees[i]);

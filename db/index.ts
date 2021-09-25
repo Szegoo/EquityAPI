@@ -5,19 +5,19 @@ require('dotenv').config();
 console.log(process.env.SECRET);
 
 const keyinfo = {
-    key: 'b52fhd7edjbnfqpnmcwvri6pkta',
+    key: 'bqpxpxdd6xtcbbwgskfkplnrvhm',
     secret: process.env.SECRET
 }
 async function generate () {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.newDB(undefined, 'test1');
+    const thread = await client.newDB(undefined, 'testdb1');
 
-    await client.newCollection(thread, {name: 'Employees', schema: employeeSchema});
+    await client.newCollection(thread, {name: 'EmployeesDB', schema: employeeSchema});
     return client;
 }
 export async function addEmployee(wallet: string, bloxicoMail: string, email: string) {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.getThread('test1');
+    const thread = await client.getThread('testdb1');
     const employee = await getEmployee(bloxicoMail);
     if(typeof employee !== typeof undefined) {
         return;
@@ -25,7 +25,7 @@ export async function addEmployee(wallet: string, bloxicoMail: string, email: st
 
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
 
-    client.create(threadId, 'Employees', [{
+    client.create(threadId, 'EmployeesDB', [{
         wallet,
         bloxicoMail,
         email,
@@ -35,7 +35,7 @@ export async function addEmployee(wallet: string, bloxicoMail: string, email: st
 }
 export async function setActivity(activity: boolean, bloxicoMail: string) {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.getThread('test1');
+    const thread = await client.getThread('testdb1');
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
     const employee : Employee = await getEmployee(bloxicoMail);
     if(employee.updated > Date.now()-(1000*3600*24)) {
@@ -43,8 +43,8 @@ export async function setActivity(activity: boolean, bloxicoMail: string) {
     }
     employee.activity.push(activity);
     employee.updated = Date.now();
-    await client.delete(threadId, 'Employees', [employee._id]);
-    await client.create(threadId, 'Employees', [{
+    await client.delete(threadId, 'EmployeesDB', [employee._id]);
+    await client.create(threadId, 'EmployeesDB', [{
         updated: employee.updated,
         wallet: employee.wallet,
         email: employee.email,
@@ -54,9 +54,9 @@ export async function setActivity(activity: boolean, bloxicoMail: string) {
 }
 export async function getEmployee(bloxicoMail:string): Promise<any> {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.getThread('test1');
+    const thread = await client.getThread('testdb1');
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
-    const employee = (await client.find(threadId, 'Employees', {
+    const employee = (await client.find(threadId, 'EmployeesDB', {
         ands: [{
             fieldPath: "bloxicoMail", 
             value: {
@@ -67,17 +67,17 @@ export async function getEmployee(bloxicoMail:string): Promise<any> {
     return employee;
 }
 export async function getEmployeeByIndx(indx:number):Promise<Employee> {
-    const employees = await getEmployees();
+    const employeesdb = await getEmployees();
 
-    return employees[indx];
+    return employeesdb[indx];
 }
 export async function getEmployees() :Promise<Employee[]>  {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.getThread('test1');
+    const thread = await client.getThread('testdb1');
 
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
 
-    const employees: Employee[] = await client.find(threadId, 'Employees', {});
+    const employeesdb: Employee[] = await client.find(threadId, 'EmployeesDB', {});
     
-    return employees;
+    return employeesdb;
 }
