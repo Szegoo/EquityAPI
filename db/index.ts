@@ -78,6 +78,6 @@ export async function getEmployees() :Promise<Employee[]>  {
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
 
     const employees: Employee[] = await client.find(threadId, 'Employees', {});
-
+    
     return employees;
 }

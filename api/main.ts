@@ -2,6 +2,13 @@ import {isActiveOnCallendar, hadMeetings} from './calendar';
 import {getEmployees, setActivity, getEmployee} from '../db/index';
 import {Employee} from '../db/employee';
 
+/**
+ * Checks google meet and calendar to see the employee's activity.
+ * 
+ * @param {string} bloxicoMail the bloxico mail of the employee
+ * @param {string} backup the backup email of the employee
+ * @return {boolean} if the employee was active 80% of the time the function returns true
+ */
 export async function isActive(bloxicoMail:string, backup:string, addActivity: boolean=false):Promise<boolean> {
     //check if the user was active 80% of the time in the last max 60 days;
     let res:boolean;
@@ -34,6 +41,7 @@ export async function isActive(bloxicoMail:string, backup:string, addActivity: b
     res = ((length/100)*80) < activity;
     return res;
 }
+
 export async function getInactive():Promise<Employee[]> {
    const employees = await getEmployees();
    let unactive = [];

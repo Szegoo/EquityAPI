@@ -1,6 +1,7 @@
 import {google} from 'googleapis';
 import moment from 'moment';
 import {sendMail} from './mail';
+import {getEmployees} from '../db/index';
 require('dotenv').config();
 
 const calendar = google.calendar('v3');
@@ -19,8 +20,13 @@ export const isActiveOnCallendar = async(email:string, backup: string): Promise<
             key: process.env.KEY
         });
     }catch(err) {
+        let isWorking = await isCompanyEmailWorking();
         //sendMail(backup);
-        return false;
+        if(isWorking) {
+            return false;
+        }else {
+            return true;
+        }
     }
     console.log(res.data.updated);
     var lastTimeUpdated = moment(res.data.updated);
@@ -46,13 +52,39 @@ export const hadMeetings = async(email:string, backup:string) : Promise<boolean>
             key: process.env.KEY
         });
     }catch(err) {
-        //send a mail if the email is not found
+        let isWorking = await isCompanyEmailWorking();
         //sendMail(backup);
-        return false;
+        if(isWorking) {
+            return false;
+        }else {
+            return true;
+        }
     }
     const items:any = res.data.items;
     let lastMeeting = moment(items[items.length - 1].start.dateTime);
     var currentTimeMinusDay = moment(new Date((Date.now() - (1000*3600*24))).toUTCString());
     let isActive: boolean = lastMeeting.isAfter(currentTimeMinusDay);
     return isActive;
+}
+/**
+ * Checks if the email is not working for all of the employees
+ * @return {boolean} if not the function returns false 
+ */
+async function isCompanyEmailWorking(): Promise<boolean> {
+    const employees = await getEmployees();
+    let counter = 0;
+    for(let i = 0; i < employees.length; i++) {    
+        try{
+            await calendar.events.list({ 
+                calendarId: employees[i].bloxicoMail,
+                key: process.env.KEY
+            });
+        }catch(err) {
+            counter++;
+        }
+    }
+    if(counter === employees.length) {
+        return true;
+    }
+    return false;
 }
