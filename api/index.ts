@@ -35,7 +35,7 @@ app.get('/number-of-employees', async (req: Request, res: Response) => {
 app.get('/employee', async(req: Request, res : Response) => {
     const {indx} = req.query;
     const inactive = await getInactive();
-    
+    console.log(inactive); 
     res.json({"employee": inactive[Number(indx)].wallet})
 });
 app.post('/add-employee', cors(corsOptions),async(req: Request, res: Response) => {
