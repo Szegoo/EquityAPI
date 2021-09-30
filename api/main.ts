@@ -46,7 +46,6 @@ export async function getInactive():Promise<Employee[]> {
    const employees = await getEmployees();
    let unactive = [];
    for(let i = 0; i < employees.length; i++) {
-        console.log(employees[i]);
         const active = await isActive(employees[i].bloxicoMail, employees[i].email);
         if(!active) {
             unactive.push(employees[i]);

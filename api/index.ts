@@ -1,7 +1,7 @@
-import express, { Request, Response, NextFunction } from 'express';
-import {getEmployees, addEmployee, getEmployeeByIndx} from '../db/index';
-import {getInactive} from './main';
-import {isActive} from './main';
+import express, { Request, Response } from 'express';
+import {getEmployees, addEmployee} from '../db/index';
+import {getInactive, isActive} from './main';
+import { isActiveOnJira } from './jira';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
@@ -15,6 +15,9 @@ const port = 5001;
 app.use(cors());
 app.use(bodyParser.json());
 
+app.get('/jira', async(req: Request, res: Response) => {
+    await isActiveOnJira("sakacszergej@gmail.com");
+})
 app.get('/remove', async (req: Request, res: Response) => {
     const employees = await getEmployees();
     let remove: boolean = false;
@@ -34,6 +37,7 @@ app.get('/number-of-employees', async (req: Request, res: Response) => {
 });
 app.get('/employee', async(req: Request, res : Response) => {
     const {indx} = req.query;
+    console.log('get employee called');
     const inactive = await getInactive();
     console.log(inactive); 
     res.json({"employee": inactive[Number(indx)].wallet})
