@@ -1,5 +1,6 @@
 import {isActiveOnCallendar, hadMeetings} from './calendar';
 import {getEmployees, setActivity, getEmployee} from '../db/index';
+import {isActiveOnJira} from './jira';
 import {Employee} from '../db/employee';
 
 /**
@@ -12,12 +13,13 @@ import {Employee} from '../db/employee';
 export async function isActive(bloxicoMail:string, backup:string, addActivity: boolean=false):Promise<boolean> {
     //check if the user was active 80% of the time in the last max 60 days;
     let res:boolean;
-    const isActive = await isActiveOnCallendar(bloxicoMail, 
-        backup);
-    const had = await hadMeetings(bloxicoMail, 
-        backup)
     if(addActivity) {
-        if(!isActive || !had) {
+        const isActive = await isActiveOnCallendar(bloxicoMail, 
+            backup);
+        const had = await hadMeetings(bloxicoMail, 
+            backup)
+        const activeOnJira = isActiveOnJira(bloxicoMail);
+        if(!isActive || !had || !activeOnJira) {
             await setActivity(false, bloxicoMail);
         }else {
             await setActivity(true, bloxicoMail);

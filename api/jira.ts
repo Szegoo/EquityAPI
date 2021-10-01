@@ -27,11 +27,17 @@ export async function isActiveOnJira(email: string) : Promise<boolean> {
         return false;
     }
     const {issues} = await jira.getUsersIssues(username, false);
+    for(let i = 0; i < issues.length; i++) {
+        isActive(issues[i]);
+    }
     console.log(issues);
     
     return true;
 }
+function isActive(issue:any):boolean {
 
+    return true;
+}
 async function getUsernameByEmail(email:string): Promise<string> {
     const userData = await jira.getUsers();
     let username = "";
