@@ -13,7 +13,10 @@ import {Employee} from '../db/employee';
 export async function isActive(bloxicoMail:string, backup:string, addActivity: boolean=false):Promise<boolean> {
     //check if the user was active 80% of the time in the last max 60 days;
     let res:boolean;
-    if(addActivity) {
+    const today = new Date();
+    //don't check if it is saturday sunday
+    console.log(today.getDay());
+    if(addActivity && (today.getDay() == 6 || today.getDay() == 0)) {
         const isActive = await isActiveOnCallendar(bloxicoMail, 
             backup);
         const had = await hadMeetings(bloxicoMail, 
@@ -29,14 +32,11 @@ export async function isActive(bloxicoMail:string, backup:string, addActivity: b
     const employee:Employee = await getEmployee(bloxicoMail);
     console.log(employee);
     let activity:number = 0;
-    let border:number = 0;
     let length = employee.activity.length;
-    if(employee.activity.length > 60) {
-        border = 60
-    }else {
-        border = employee.activity.length;
+    if(employee.activity.length < 60) {
+        return true
     }
-    for(let i = 0; i > border; i++) {
+    for(let i = 0; i > 60; i++) {
         if(employee.activity[i] === true) {
             activity++;
         }
