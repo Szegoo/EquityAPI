@@ -27,6 +27,7 @@ export async function isActive(bloxicoMail:string, backup:string, addActivity: b
     }
     
     const employee:Employee = await getEmployee(bloxicoMail);
+    console.log(employee);
     let activity:number = 0;
     let border:number = 0;
     let length = employee.activity.length;
@@ -40,8 +41,11 @@ export async function isActive(bloxicoMail:string, backup:string, addActivity: b
             activity++;
         }
     }
-    res = ((length/100)*80) < activity;
-    return res;
+    console.log(((length/100)*80));
+    if(((length/100)*80) < activity) {  
+        return true;
+    }
+    return false;
 }
 
 export async function getInactive():Promise<Employee[]> {

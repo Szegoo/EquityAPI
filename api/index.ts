@@ -16,13 +16,14 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/jira', async(req: Request, res: Response) => {
-    await isActiveOnJira("sakacszergej@gmail.com");
+    let response = await isActiveOnJira("sakacszergej@gmail.com");
+    res.json({active: response});
 })
 app.get('/remove', async (req: Request, res: Response) => {
     const employees = await getEmployees();
     let remove: boolean = false;
     for(let i = 0; i < employees.length; i++) {
-        const active = isActive(employees[i].bloxicoMail, employees[i].email, true);
+        const active = await isActive(employees[i].bloxicoMail, employees[i].email, true);
         if(!active) {
             remove = true;
             break;
