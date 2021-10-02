@@ -4,6 +4,12 @@ import {getInactive, isActive} from './main';
 import { isActiveOnJira } from './jira';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import schedule from 'node-schedule';
+import {checkActivity} from './contract';
+
+const job = schedule.scheduleJob("0 0 * * *", () => {
+    checkActivity();
+})
 
 const corsOptions = {
     origin: 'http://127.0.0.1:8080'
