@@ -7,7 +7,7 @@ export const employeeSchema = {
         bloxicoMail: {type: 'string'},
         email: {type: 'string'},
         activity: {
-            type: 'boolean',
+            type: 'number',
             minimum: 0,
             exlusiveMaximum: 732,
         },

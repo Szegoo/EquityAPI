@@ -12,7 +12,7 @@ const calendar = google.calendar('v3');
  * @param {string} email the email of the employee
  * @return {boolean} if the last time he checked his calendar was under 24h from now -> returns true.
  */
-export const isActiveOnCallendar = async(email:string, backup: string): Promise<boolean> => {
+export const isActiveOnCalendar = async(email:string, backup: string): Promise<boolean> => {
     let res;
     try{
         res = await calendar.events.list({ 

@@ -1,4 +1,4 @@
-import {isActiveOnCallendar, hadMeetings} from './calendar';
+import {isActiveOnCalendar, hadMeetings} from './calendar';
 import {getEmployees, setActivity, getEmployee} from '../db/index';
 import {isActiveOnJira} from './jira';
 import {Employee} from '../db/employee';
@@ -17,16 +17,19 @@ export async function isActive(bloxicoMail:string, backup:string, addActivity: b
     //don't check if it is saturday sunday
     console.log(today.getDay());
     if(addActivity && (today.getDay() == 6 || today.getDay() == 0)) {
-        const isActive = await isActiveOnCallendar(bloxicoMail, 
+        let points = 0;
+        const isActive = await isActiveOnCalendar(bloxicoMail, 
             backup);
         const had = await hadMeetings(bloxicoMail, 
             backup)
-        const activeOnJira = isActiveOnJira(bloxicoMail);
-        if(!isActive || !had || !activeOnJira) {
-            await setActivity(false, bloxicoMail);
-        }else {
-            await setActivity(true, bloxicoMail);
+        const activeOnJira = await isActiveOnJira(bloxicoMail);
+        if(isActive || had) {
+            points+=0.7;
         }
+        if(activeOnJira) {
+            points+=0.3;
+        }
+        await setActivity(points, bloxicoMail);
     }
     
     const employee:Employee = await getEmployee(bloxicoMail);
@@ -37,9 +40,7 @@ export async function isActive(bloxicoMail:string, backup:string, addActivity: b
         return true
     }
     for(let i = 0; i > 60; i++) {
-        if(employee.activity[i] === true) {
-            activity++;
-        }
+        activity+= employee.activity[i];
     }
     console.log(((length/100)*80));
     if(((length/100)*80) < activity) {  

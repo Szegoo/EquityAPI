@@ -5,19 +5,22 @@ require('dotenv').config();
 console.log(process.env.SECRET);
 
 const keyinfo = {
-    key: 'bqpxpxdd6xtcbbwgskfkplnrvhm',
+    key: 'bl2h343auadpiwcxwi3jv4e2yhi',
     secret: process.env.SECRET
 }
 async function generate () {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.newDB(undefined, 'testdb1');
+    //const threadId: ThreadID = await client.newDB(undefined, 'empdb1');
+    const thread = await client.getThread('empdb1');
+    const threadId: ThreadID = ThreadID.fromString(thread.id); 
+    console.log(await client.listCollections(threadId));
+    await client.newCollection(threadId, {name: "EmployeesDB", schema: employeeSchema});
 
-    await client.newCollection(thread, {name: 'EmployeesDB', schema: employeeSchema});
-    return client;
+    console.log(await client.listCollections(threadId));
 }
 export async function addEmployee(wallet: string, bloxicoMail: string, email: string) {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.getThread('testdb1');
+    const thread = await client.getThread('empdb1');
     const employee = await getEmployee(bloxicoMail);
     if(typeof employee !== typeof undefined) {
         return;
@@ -33,9 +36,9 @@ export async function addEmployee(wallet: string, bloxicoMail: string, email: st
         updated: 0
     }])
 }
-export async function setActivity(activity: boolean, bloxicoMail: string) {
+export async function setActivity(activity: number, bloxicoMail: string) {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.getThread('testdb1');
+    const thread = await client.getThread('empdb1');
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
     const employee : Employee = await getEmployee(bloxicoMail);
     if(employee.updated > Date.now()-(1000*3600*24)) {
@@ -54,7 +57,7 @@ export async function setActivity(activity: boolean, bloxicoMail: string) {
 }
 export async function getEmployee(bloxicoMail:string): Promise<any> {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.getThread('testdb1');
+    const thread = await client.getThread('empdb1');
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
     const employee = (await client.find(threadId, 'EmployeesDB', {
         ands: [{
@@ -67,17 +70,17 @@ export async function getEmployee(bloxicoMail:string): Promise<any> {
     return employee;
 }
 export async function getEmployeeByIndx(indx:number):Promise<Employee> {
-    const employeesdb = await getEmployees();
+    const employeesDB = await getEmployees();
 
-    return employeesdb[indx];
+    return employeesDB[indx];
 }
 export async function getEmployees() :Promise<Employee[]>  {
     const client = await Client.withKeyInfo(keyinfo);
-    const thread = await client.getThread('testdb1');
+    const thread = await client.getThread('empdb1');
 
     const threadId: ThreadID = ThreadID.fromString(thread.id); 
 
-    const employeesdb: Employee[] = await client.find(threadId, 'EmployeesDB', {});
-    
-    return employeesdb;
+    const employeesDB: Employee[] = await client.find(threadId, 'EmployeesDB', {});
+
+    return employeesDB;
 }

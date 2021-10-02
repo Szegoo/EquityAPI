@@ -3,6 +3,6 @@ export interface Employee {
     wallet: string,
     bloxicoMail: string, 
     email: string,
-    activity: boolean[],
+    activity: number[],
     updated: number
 }
