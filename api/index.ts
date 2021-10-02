@@ -5,10 +5,13 @@ import { isActiveOnJira } from './jira';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import schedule from 'node-schedule';
-import {checkActivity} from './contract';
+import {checkActivity, sendList} from './contract';
 
-const job = schedule.scheduleJob("0 0 * * *", () => {
+schedule.scheduleJob("0 16 * * *", () => {
     checkActivity();
+})
+schedule.scheduleJob("0 0 0 1 10", () => {
+    sendList();
 })
 
 const corsOptions = {
