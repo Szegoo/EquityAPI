@@ -7,11 +7,11 @@ import bodyParser from 'body-parser';
 import schedule from 'node-schedule';
 import {checkActivity, sendList} from './contract';
 
-schedule.scheduleJob("0 16 * * *", () => {
+schedule.scheduleJob("0 10 * * *", () => {
     checkActivity();
 })
 const today = new Date();
-let date = new Date(today.getFullYear()+2, today.getMonth(), today.getDay(), 1);
+let date = new Date(2023, today.getMonth(), today.getDay(), 1);
 schedule.scheduleJob(date, () => {
     sendList();
 })
@@ -31,6 +31,7 @@ app.get('/jira', async(req: Request, res: Response) => {
     res.json({active: response});
 })
 app.get('/remove', async (req: Request, res: Response) => {
+    console.log('remove called');
     const employees = await getEmployees();
     let remove: boolean = false;
     for(let i = 0; i < employees.length; i++) {

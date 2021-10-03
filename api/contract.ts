@@ -5,7 +5,7 @@ console.log(process.env.PRIVATE_KEY);
 
 const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT);
 
-const signer = new ethers.Wallet("5a523dc46a58817c4c59c3acee9bd0a0f9c1291b572aa9a636d010c7c244e578", provider);
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
 console.log(signer.address);
 

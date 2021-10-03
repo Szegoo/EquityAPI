@@ -1,4 +1,4 @@
-export const address = "";
+export const address = "0x0b413ef5A52024CDd27bA06D517cf911AAC49b86";
 export const ABI = [
 	{
 		"inputs": [],

@@ -37,7 +37,7 @@ export async function isActive(bloxicoMail:string, backup:string, addActivity: b
     let activity:number = 0;
     let length = employee.activity.length;
     if(employee.activity.length < 60) {
-        return true
+        return true;
     }
     for(let i = 0; i > 60; i++) {
         activity+= employee.activity[i];
