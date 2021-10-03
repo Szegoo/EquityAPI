@@ -10,7 +10,9 @@ import {checkActivity, sendList} from './contract';
 schedule.scheduleJob("0 16 * * *", () => {
     checkActivity();
 })
-schedule.scheduleJob("0 0 0 1 10", () => {
+const today = new Date();
+let date = new Date(today.getFullYear()+2, today.getMonth(), today.getDay(), 1);
+schedule.scheduleJob(date, () => {
     sendList();
 })
 
