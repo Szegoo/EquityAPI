@@ -1,11 +1,11 @@
 import { ethers } from "ethers";
 import {ABI, address} from '../ABI';
 require('dotenv').config();
-console.log(process.env.PRIVATE_KEY);
 
+const privKey:string = process.env.PRIVATE_KEY || "";
 const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT);
 
-const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+const signer = new ethers.Wallet(privKey, provider);
 
 console.log(signer.address);
 

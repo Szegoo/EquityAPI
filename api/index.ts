@@ -26,10 +26,6 @@ const port = 5001;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/jira', async(req: Request, res: Response) => {
-    let response = await isActiveOnJira("sakacszergej@gmail.com");
-    res.json({active: response});
-})
 app.get('/remove', async (req: Request, res: Response) => {
     console.log('remove called');
     const employees = await getEmployees();

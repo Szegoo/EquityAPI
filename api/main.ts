@@ -16,7 +16,7 @@ export async function isActive(bloxicoMail:string, backup:string, addActivity: b
     const today = new Date();
     //don't check if it is saturday sunday
     console.log(today.getDay());
-    if(addActivity && (today.getDay() == 6 || today.getDay() == 0)) {
+    if(addActivity && (today.getDay() != 6 || today.getDay() != 0)) {
         let points = 0;
         const isActive = await isActiveOnCalendar(bloxicoMail, 
             backup);
@@ -29,6 +29,7 @@ export async function isActive(bloxicoMail:string, backup:string, addActivity: b
         if(activeOnJira) {
             points+=0.3;
         }
+        console.log("adding points: " + points);
         await setActivity(points, bloxicoMail);
     }
     

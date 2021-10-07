@@ -1,6 +1,3 @@
-//api https://hostname.atlassian.net/rest/api/3/user/search?query=sakacszergej@gmail.com&expand=attributes
-//https://community.atlassian.com/t5/Jira-questions/JIRA-API-which-returns-last-login-time-of-all-users/qaq-p/1153472
-//https://sinkotestnet.atlassian.net/rest/api/2/search?jql=assignee=Sergej
 import JiraApi from 'jira-client';
 import moment from 'moment';
 require('dotenv').config();
@@ -25,8 +22,11 @@ export async function isActiveOnJira(email: string) : Promise<boolean> {
     console.log("active on jira");
     const username = await getUsernameByEmail(email);
     if(username === "") {
-        //if user is not found -> return false
-        return false;
+        const working = await isCompanyEmailWorking(email);
+        if(working) {
+            return false;
+        }
+        return true;
     }
     const {issues} = await jira.getUsersIssues(username, false);
     let issuesChecked = 0;
@@ -60,4 +60,16 @@ async function getUsernameByEmail(email:string): Promise<string> {
         }
     }
     return username;
+}
+
+async function isCompanyEmailWorking(bloxicoMail): Promise<boolean> {
+    let active = 0;
+    const username = await getUsernameByEmail(bloxicoMail);
+    if(username !== "") {
+        active++;
+    } 
+    if(active > 0) {
+        return true;
+    }
+    return false;
 }
