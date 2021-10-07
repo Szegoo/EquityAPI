@@ -62,7 +62,7 @@ async function getUsernameByEmail(email:string): Promise<string> {
     return username;
 }
 
-async function isCompanyEmailWorking(bloxicoMail): Promise<boolean> {
+async function isCompanyEmailWorking(bloxicoMail:string): Promise<boolean> {
     let active = 0;
     const username = await getUsernameByEmail(bloxicoMail);
     if(username !== "") {
