@@ -11,19 +11,16 @@ import {Employee} from '../db/employee';
  * @return {boolean} if the employee was active 80% of the time the function returns true
  */
 export async function isActive(bloxicoMail:string, backup:string, addActivity: boolean=false):Promise<boolean> {
-    //check if the user was active 80% of the time in the last max 60 days;
-    let res:boolean;
     const today = new Date();
     //don't check if it is saturday sunday
-    console.log(today.getDay());
     if(addActivity && (today.getDay() != 6 || today.getDay() != 0)) {
         let points = 0;
         const isActive = await isActiveOnCalendar(bloxicoMail, 
             backup);
-        const had = await hadMeetings(bloxicoMail, 
-            backup)
+        //const had = await hadMeetings(bloxicoMail, 
+          //  backup)
         const activeOnJira = await isActiveOnJira(bloxicoMail);
-        if(isActive || had) {
+        if(isActive) {
             points+=0.7;
         }
         if(activeOnJira) {

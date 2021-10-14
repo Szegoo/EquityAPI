@@ -19,7 +19,7 @@ var jira = new JiraApi({
  * @return {boolean} returns true if the employee checked any of the issues in the last 24h
  */
 export async function isActiveOnJira(email: string) : Promise<boolean> {
-    console.log("active on jira");
+    console.log(`checking ${email} on jira`);
     const username = await getUsernameByEmail(email);
     if(username === "") {
         const working = await isCompanyEmailWorking(email);
@@ -32,6 +32,7 @@ export async function isActiveOnJira(email: string) : Promise<boolean> {
     let issuesChecked = 0;
     for(let i = 0; i < issues.length; i++) {
         //check if the employee checked any of the issues in the last 24h
+        console.log(issues[i]);
         const res = isActive(issues[i]);
         if(res === true) {
             issuesChecked++;
@@ -41,6 +42,12 @@ export async function isActiveOnJira(email: string) : Promise<boolean> {
     
     return issuesChecked > 0 ? true : false;
 }
+/**
+ * Checks jira to see the employee's activity.
+ * 
+ * @param {any} issue the issue to check the
+ * @return {boolean} returns true if the employee checked any of the issues in the last 24h
+ */
 function isActive(issue:any):boolean {
     let lastDayTime = moment(new Date((Date.now() - (1000*3600*24)))).format();
     console.log("issue: " + issue.fields.lastViewed);
