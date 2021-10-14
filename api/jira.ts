@@ -49,6 +49,10 @@ export async function isActiveOnJira(email: string) : Promise<boolean> {
  * @return {boolean} returns true if the employee checked any of the issues in the last 24h
  */
 function isActive(issue:any):boolean {
+    /*PROBLEM
+        the last time viewed is not the last time viewed by the employee with 
+        the specific email, but the last time anyone checked the issue
+    */
     let lastDayTime = moment(new Date((Date.now() - (1000*3600*24)))).format();
     console.log("issue: " + issue.fields.lastViewed);
     let viewed = moment(issue.fields.lastViewed);
