@@ -14,7 +14,7 @@ const calendar = google.calendar("v3");
  */
 export const isActiveOnCalendar = async (
   email: string,
-  backup: string
+  backup: string,
 ): Promise<boolean> => {
   let res;
   try {
@@ -35,7 +35,7 @@ export const isActiveOnCalendar = async (
   const lastTimeUpdated = moment(res.data.updated);
   //current time - 24h
   const currentTimeMinusDay = moment(
-    new Date(Date.now() - 1000 * 3600 * 24).toUTCString()
+    new Date(Date.now() - 1000 * 3600 * 24).toUTCString(),
   );
   //checks if the employee has modified his calendar the last 24 hours
   const isActive: boolean = lastTimeUpdated.isAfter(currentTimeMinusDay);
@@ -49,7 +49,7 @@ export const isActiveOnCalendar = async (
  */
 export const hadMeetings = async (
   email: string,
-  backup: string
+  backup: string,
 ): Promise<boolean> => {
   let res;
   //list function will throw an error if
@@ -71,7 +71,7 @@ export const hadMeetings = async (
   const items: any = res.data.items;
   const lastMeeting = moment(items[items.length - 1].start.dateTime);
   const currentTimeMinusDay = moment(
-    new Date(Date.now() - 1000 * 3600 * 24).toUTCString()
+    new Date(Date.now() - 1000 * 3600 * 24).toUTCString(),
   );
   const isActive: boolean = lastMeeting.isAfter(currentTimeMinusDay);
   return isActive;

@@ -13,7 +13,7 @@ import { Employee } from "../../db/employee";
 export async function isActive(
   bloxicoMail: string,
   backup: string,
-  addActivity = false
+  addActivity = false,
 ): Promise<boolean> {
   const today = new Date();
   //don't check if it is saturday sunday

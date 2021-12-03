@@ -9,7 +9,7 @@ export async function shouldRemove(req: Request, res: Response) {
     const active = await isActive(
       employees[i].bloxicoMail,
       employees[i].email,
-      true
+      true,
     );
     if (!active) {
       remove = true;

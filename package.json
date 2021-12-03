@@ -6,6 +6,8 @@
   "scripts": {
     "server": "nodemon ./src/api/index.ts",
     "start": "npm install ts-node --max-old-space-size=4096 typescript && ts-node api/index.ts",
+    "prettier": "prettier --config ./.prettierrc --write \"**/*.{json,md,ts,js}\"",
+    "prettier:check": "prettier --check --config ./.prettierrc \"**/*.{json,md,js,ts}\"",
     "lint": "eslint --ignore-path .gitignore --ext .ts src/",
     "lint:fix": "npm run lint -- --fix"
   },

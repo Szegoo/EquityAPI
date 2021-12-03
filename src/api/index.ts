@@ -8,7 +8,7 @@ import { addEmployee } from "./controllers/employeeController";
 import cors from "cors";
 import bodyParser from "body-parser";
 import schedule from "node-schedule";
-import { checkActivity, sendList } from "./contract";
+import { checkActivity, sendList } from "./services/contractServices";
 
 schedule.scheduleJob("0 10 * * *", () => {
   checkActivity();

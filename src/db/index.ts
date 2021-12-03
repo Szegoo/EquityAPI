@@ -24,7 +24,7 @@ async function generate() {
 export async function addEmployee(
   wallet: string,
   bloxicoMail: string,
-  email: string
+  email: string,
 ) {
   const client = await Client.withKeyInfo(keyinfo);
   const thread = await client.getThread("empdb1");
@@ -98,7 +98,7 @@ export async function getEmployees(): Promise<Employee[]> {
   const employeesDB: Employee[] = await client.find(
     threadId,
     "EmployeesDB",
-    {}
+    {},
   );
 
   return employeesDB;
