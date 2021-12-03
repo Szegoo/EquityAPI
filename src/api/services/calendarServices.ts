@@ -1,7 +1,7 @@
 import { google } from "googleapis";
 import moment from "moment";
-import { sendMail } from "./mail";
-import { getEmployees } from "../db/index";
+import { sendMail } from "./mailServices";
+import { getEmployees } from "../../db/index";
 require("dotenv").config();
 
 const calendar = google.calendar("v3");

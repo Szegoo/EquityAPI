@@ -1,7 +1,7 @@
-import { isActiveOnCalendar, hadMeetings } from "./calendar";
-import { getEmployees, setActivity, getEmployee } from "../db/index";
-import { isActiveOnJira } from "./jira";
-import { Employee } from "../db/employee";
+import { isActiveOnCalendar, hadMeetings } from "../services/calendarServices";
+import { getEmployees, setActivity, getEmployee } from "../../db/index";
+import { isActiveOnJira } from "../services/jiraServices";
+import { Employee } from "../../db/employee";
 
 /**
  * Checks google meet and calendar to see the employee's activity.

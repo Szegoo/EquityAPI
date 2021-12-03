@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { ABI, address } from "../ABI";
+import { ABI, address } from "../config/ABI";
 require("dotenv").config();
 
 const privKey: string = process.env.PRIVATE_KEY || "";
