@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import {config} from '../config';
 import {
   shouldRemove,
   countInactive,
@@ -14,17 +15,12 @@ schedule.scheduleJob("0 10 * * *", () => {
   checkActivity();
 });
 const today = new Date();
-const date = new Date(2023, today.getMonth(), today.getDay(), 1);
+const date = new Date(today.getFullYear(), today.getMonth(), today.getDay(), 1);
 schedule.scheduleJob(date, () => {
   sendList();
 });
 
-const corsOptions = {
-  origin: "http://127.0.0.1:8080",
-};
-
 const app = express();
-const port = 5001;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -37,6 +33,6 @@ app.get("/employee", getInactiveEmployees);
 
 app.post("/add-employee", addEmployee);
 
-app.listen(process.env.PORT || port, () => {
-  console.log("listening on port " + port);
+app.listen(process.env.PORT || config.port, () => {
+  console.log("listening on port " + config.port);
 });
