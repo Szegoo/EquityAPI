@@ -1,6 +1,10 @@
 import express, { Request, Response } from "express";
-import {shouldRemove, countInactive, getInactiveEmployees} from './controllers/removalController';
-import {addEmployee} from './controllers/employeeController';
+import {
+  shouldRemove,
+  countInactive,
+  getInactiveEmployees,
+} from "./controllers/removalController";
+import { addEmployee } from "./controllers/employeeController";
 import cors from "cors";
 import bodyParser from "body-parser";
 import schedule from "node-schedule";
