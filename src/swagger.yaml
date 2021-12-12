@@ -6,7 +6,7 @@ paths:
       responses:
         '200':
           description: OK
-  /employee?id={employeeId}:
+  /employee?indx={employeeId}:
     get:
       summary: Get the inactive employee by Id
       parameters: 
@@ -15,4 +15,4 @@ paths:
         schema:
           type: integer
         required: true
-        description: Numberic ID of the employee
+        description: The index of employee 
