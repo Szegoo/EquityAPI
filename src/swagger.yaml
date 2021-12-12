@@ -1,0 +1,18 @@
+swagger: "2.0"
+paths: 
+  /remove:
+    get:
+      summary: Is there someone inactive?
+      responses:
+        '200':
+          description: OK
+  /employee?id={employeeId}:
+    get:
+      summary: Get the inactive employee by Id
+      parameters: 
+      - in: path
+        name: employeeId
+        schema:
+          type: integer
+        required: true
+        description: Numberic ID of the employee

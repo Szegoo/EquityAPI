@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import { config } from "../config";
 import {
   shouldRemove,
@@ -9,6 +9,8 @@ import { addEmployee } from "./controllers/employeeController";
 import cors from "cors";
 import bodyParser from "body-parser";
 import schedule from "node-schedule";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
 import { checkActivity, sendList } from "./services/contractServices";
 
 schedule.scheduleJob("0 10 * * *", () => {
@@ -21,6 +23,19 @@ schedule.scheduleJob(date, () => {
 });
 
 const app = express();
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      version: "1.0.0",
+      title: "Proof of Equity API",
+      description: "API that is used together with poe-ui and poe-contract",
+    },
+  },
+  apis: ["src/swagger.yaml"],
+};
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(cors());
 app.use(bodyParser.json());

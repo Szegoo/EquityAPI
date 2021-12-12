@@ -1,4 +1,4 @@
-import { isActiveOnCalendar, hadMeetings } from "../services/calendarServices";
+import { isActiveOnCalendar } from "../services/calendarServices";
 import { getEmployees, setActivity, getEmployee } from "../../db/index";
 import { isActiveOnJira } from "../services/jiraServices";
 import { Employee } from "../../db/employee";
